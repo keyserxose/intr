@@ -3,7 +3,6 @@ package main
 
 import (
 	"bufio"
-	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -12,8 +11,7 @@ import (
 	"strings"
 )
 
-var host *string
-var input string
+var host string
 var command string
 var singleCommand string
 var list = []string{
@@ -103,7 +101,7 @@ func splitCommand() {
 }
 
 func terminal() {
-	cmd := exec.Command("ssh", *host, command)
+	cmd := exec.Command("ssh", host, command)
 	var out strings.Builder
 	cmd.Stdout = &out
 	err := cmd.Run()
@@ -113,7 +111,7 @@ func terminal() {
 	fmt.Println(cmd.Stdout)
 }
 
-func args() {
+/* func flags_disabled() {
 	host = flag.String("host", "", "Indicate the hostname")
 	flag.Parse()
 	hostStr := *host
@@ -122,4 +120,21 @@ func args() {
 		os.Exit(1)
 
 	}
+} */
+
+func args() {
+	args := os.Args[1:]
+	if len(args) < 1 {
+		fmt.Println("Error, you need to indicate a host to connect to")
+		os.Exit(1)
+	}
+	if len(args) > 1 {
+		fmt.Println("Error, you can only indicate one host")
+		os.Exit(1)
+	}
+	if len(args) == 1 {
+		host = args[0]
+		fmt.Println("You are connecting to: " + host)
+	}
+
 }
