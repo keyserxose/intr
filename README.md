@@ -1,6 +1,6 @@
 # rsync
 
-Go app to execute commands against rsync.net
+Go app to execute commands against hosts that do not allow an interactive session
 
 ## Usage
 
