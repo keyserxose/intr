@@ -136,5 +136,4 @@ func args() {
 		host = args[0]
 		fmt.Println("You are connecting to: " + host)
 	}
-
 }
