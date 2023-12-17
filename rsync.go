@@ -118,18 +118,33 @@ func terminal() {
 	if hostStr == "" {
 		fmt.Println("Error, you need to indicate a host to connect to")
 		os.Exit(1)
-
 	}
 } */
 
+func contains(s []string, e string) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
+}
+
 func args() {
 	args := os.Args[1:]
+	help := contains(args, "help")
 	if len(args) < 1 {
 		fmt.Println("Error, you need to indicate a host to connect to")
 		os.Exit(1)
 	}
 	if len(args) > 1 {
 		fmt.Println("Error, you can only indicate one host")
+		os.Exit(1)
+	}
+	if help == true {
+		fmt.Println("Usage:")
+		fmt.Println("       ./rsync user@host")
+		fmt.Println("")
 		os.Exit(1)
 	}
 	if len(args) == 1 {
