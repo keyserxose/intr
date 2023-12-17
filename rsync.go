@@ -121,18 +121,9 @@ func terminal() {
 	}
 } */
 
-func contains(s []string, e string) bool {
-	for _, a := range s {
-		if a == e {
-			return true
-		}
-	}
-	return false
-}
-
 func args() {
 	args := os.Args[1:]
-	help := contains(args, "help")
+	help := slices.Contains(args, "help")
 	if len(args) < 1 {
 		fmt.Println("Error, you need to indicate a host to connect to")
 		os.Exit(1)
