@@ -149,6 +149,6 @@ func args() {
 	}
 	if len(args) == 1 {
 		host = args[0]
-		fmt.Println("You are connecting to: " + host)
+		fmt.Println("You are connected to: " + host)
 	}
 }
