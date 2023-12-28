@@ -1,4 +1,3 @@
-// utility to run commands against rsync.net
 package main
 
 import (
