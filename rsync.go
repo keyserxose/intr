@@ -11,9 +11,6 @@ import (
 	"strings"
 )
 
-var host string
-var command string
-var singleCommand string
 var list = []string{
 	"cat",
 	"dd",
@@ -62,30 +59,31 @@ var exitCommands = []string{
 }
 
 func main() {
-	args()
+	host := args()
 	for {
-		inputCommand()
-		validateCommand()
+		command := inputCommand()
+		validateCommand(host, command)
 	}
 }
 
-func inputCommand() {
+func inputCommand() (command string) {
 	fmt.Print("Input Command: ")
 	input := bufio.NewScanner(os.Stdin)
 	input.Scan()
 	command = input.Text()
 	fmt.Println("")
+	return command
 }
 
-func validateCommand() {
-	splitCommand()
+func validateCommand(host string, command string) {
+	singleCommand := splitCommand(command)
 	availableCommand := slices.Contains(list, singleCommand)
-	if availableCommand == true {
-		terminal()
+	if availableCommand {
+		terminal(host, command)
 	}
-	if availableCommand == false {
+	if !availableCommand {
 		availableExitCommand := slices.Contains(exitCommands, command)
-		if availableExitCommand == true {
+		if availableExitCommand {
 			os.Exit(1)
 		} else {
 			fmt.Println("Wrong command!")
@@ -95,12 +93,14 @@ func validateCommand() {
 	}
 }
 
-func splitCommand() {
+// This is used is to remove the parameters of a command in order to validate it
+func splitCommand(command string) (singleCommand string) {
 	commandsSeparated := strings.Split(command, " ")
 	singleCommand = commandsSeparated[0]
+	return singleCommand
 }
 
-func terminal() {
+func terminal(host string, command string) {
 	cmd := exec.Command("ssh", host, command)
 	var out strings.Builder
 	cmd.Stdout = &out
@@ -121,18 +121,20 @@ func terminal() {
 	}
 } */
 
-func args() {
+func args() (host string) {
 	args := os.Args[1:]
 	help := slices.Contains(args, "help")
 	if len(args) < 1 {
 		fmt.Println("Error, you need to indicate a host to connect to")
+		fmt.Println("Usage:")
+		fmt.Println("       ./rsync user@host")
 		os.Exit(1)
 	}
 	if len(args) > 1 {
-		fmt.Println("Error, you can only indicate one host")
+		fmt.Println("Error, you can only indicate one host to connect to")
 		os.Exit(1)
 	}
-	if help == true {
+	if help {
 		fmt.Println("Usage:")
 		fmt.Println("       ./rsync user@host")
 		fmt.Println("")
@@ -142,4 +144,5 @@ func args() {
 		host = args[0]
 		fmt.Println("You are connected to: " + host)
 	}
+	return host
 }
