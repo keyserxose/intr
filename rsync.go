@@ -51,6 +51,7 @@ var list = []string{
 	"date",
 	"cksum",
 }
+
 var exitCommands = []string{
 	"exit",
 	"quit",
@@ -109,16 +110,6 @@ func terminal(host string, command string) {
 	}
 	fmt.Println(cmd.Stdout)
 }
-
-/* func flags_disabled() {
-	host = flag.String("host", "", "Indicate the hostname")
-	flag.Parse()
-	hostStr := *host
-	if hostStr == "" {
-		fmt.Println("Error, you need to indicate a host to connect to")
-		os.Exit(1)
-	}
-} */
 
 func args() (host string) {
 	args := os.Args[1:]
