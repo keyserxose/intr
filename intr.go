@@ -117,7 +117,7 @@ func args() (host string) {
 	if len(args) < 1 {
 		fmt.Println("Error, you need to indicate a host to connect to")
 		fmt.Println("Usage:")
-		fmt.Println("       ./rsync user@host")
+		fmt.Println("       ./intr user@host")
 		os.Exit(1)
 	}
 	if len(args) > 1 {
@@ -126,7 +126,7 @@ func args() (host string) {
 	}
 	if help {
 		fmt.Println("Usage:")
-		fmt.Println("       ./rsync user@host")
+		fmt.Println("       ./intr user@host")
 		fmt.Println("")
 		os.Exit(1)
 	}
