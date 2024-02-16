@@ -1,4 +1,4 @@
-# rsync
+# intr
 
 Go app to execute commands against hosts that do not allow an interactive session
 
