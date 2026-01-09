@@ -37,6 +37,7 @@ var list = []string{
 	"split",
 	"fetch",
 	"df",
+	"du",
 	"md5",
 	"sha1",
 	"sha224",
@@ -67,7 +68,7 @@ func main() {
 }
 
 func inputCommand() (command string) {
-	fmt.Print("Input Command: ")
+	//fmt.Print("Input Command: ")
 	input := bufio.NewScanner(os.Stdin)
 	input.Scan()
 	command = input.Text()
