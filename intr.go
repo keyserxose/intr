@@ -94,7 +94,7 @@ func validateCommand(host string, command string) {
 	}
 }
 
-// This is used is to remove the parameters of a command in order to validate it
+// This is used to remove the parameters of a command in order to validate it
 func splitCommand(command string) (singleCommand string) {
 	commandsSeparated := strings.Split(command, " ")
 	singleCommand = commandsSeparated[0]
