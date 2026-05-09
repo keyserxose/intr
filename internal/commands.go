@@ -3,7 +3,6 @@ package internal
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
 	"slices"
@@ -11,7 +10,6 @@ import (
 )
 
 func InputCommand() (command string) {
-	//fmt.Print("Input Command: ")
 	input := bufio.NewScanner(os.Stdin)
 	input.Scan()
 	command = input.Text()
@@ -19,22 +17,16 @@ func InputCommand() (command string) {
 	return command
 }
 
-func ValidateCommand(host string, command string) {
+func ValidateCommand(command string, list []string) (validation bool) {
 	singleCommand := splitCommand(command)
 	availableCommand := slices.Contains(list, singleCommand)
 	if availableCommand {
-		terminal(host, command)
+		return true
 	}
 	if !availableCommand {
-		availableExitCommand := slices.Contains(exitCommands, command)
-		if availableExitCommand {
-			os.Exit(0)
-		} else {
-			fmt.Println("Wrong command!")
-			fmt.Println("")
-			fmt.Println("These are the available commands: " + strings.Join(list, " "))
-		}
+		return false
 	}
+	return validation
 }
 
 // This is used to remove the parameters of a command in order to validate it
@@ -44,13 +36,35 @@ func splitCommand(command string) (singleCommand string) {
 	return singleCommand
 }
 
-func terminal(host string, command string) {
+func RunCommand(host string, command string) error {
 	cmd := exec.Command("ssh", host, command)
-	var out strings.Builder
-	cmd.Stdout = &out
+
+	var stdout strings.Builder
+	var stderr strings.Builder
+
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+
 	err := cmd.Run()
 	if err != nil {
-		log.Fatal(err)
+		return fmt.Errorf("command failed: %w, stderr: %s", err, stderr.String())
 	}
-	fmt.Println(cmd.Stdout)
+	fmt.Println(stdout.String())
+	fmt.Println(stderr.String())
+	return nil
+}
+
+func PreFlightCheck(host string) error {
+	cmd := exec.Command("ssh", host)
+
+	var stderr strings.Builder
+
+	cmd.Stderr = &stderr
+
+	err := cmd.Run()
+	if err != nil {
+		return fmt.Errorf("command failed: %w, stderr: %s", err, stderr.String())
+	}
+	return nil
+
 }

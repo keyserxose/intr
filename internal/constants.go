@@ -1,6 +1,6 @@
 package internal
 
-var list = []string{
+var List = []string{
 	"cat",
 	"dd",
 	"echo",
@@ -43,7 +43,7 @@ var list = []string{
 	"cksum",
 }
 
-var exitCommands = []string{
+var ExitCommands = []string{
 	"exit",
 	"quit",
 	"break",
