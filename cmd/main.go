@@ -18,7 +18,7 @@ func main() {
 	}
 	fmt.Println("You are connected to: " + host)
 	for {
-		command := internal.InputCommand()
+		command := internal.InputCommand(os.Stdin)
 		if internal.ValidateCommand(command, internal.ExitCommands) {
 			fmt.Println("Exiting...")
 			os.Exit(0)

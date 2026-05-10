@@ -3,37 +3,32 @@ package internal
 import (
 	"bufio"
 	"fmt"
-	"os"
+	"io"
 	"os/exec"
 	"slices"
 	"strings"
 )
 
-func InputCommand() (command string) {
-	input := bufio.NewScanner(os.Stdin)
+func InputCommand(r io.Reader) string {
+	input := bufio.NewScanner(r)
 	input.Scan()
-	command = input.Text()
+	command := input.Text()
 	fmt.Println("")
 	return command
 }
 
-func ValidateCommand(command string, list []string) (validation bool) {
-	singleCommand := splitCommand(command)
-	availableCommand := slices.Contains(list, singleCommand)
-	if availableCommand {
-		return true
-	}
-	if !availableCommand {
-		return false
-	}
-	return validation
+func ValidateCommand(command string, list []string) bool {
+	singleCommand := SplitCommand(command)
+	return slices.Contains(list, singleCommand)
 }
 
 // This is used to remove the parameters of a command in order to validate it
-func splitCommand(command string) (singleCommand string) {
-	commandsSeparated := strings.Split(command, " ")
-	singleCommand = commandsSeparated[0]
-	return singleCommand
+func SplitCommand(command string) string {
+	commandsSeparated := strings.Fields(command)
+	if len(commandsSeparated) == 0 {
+		return ""
+	}
+	return commandsSeparated[0]
 }
 
 func RunCommand(host string, command string) error {
