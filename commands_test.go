@@ -1,10 +1,8 @@
-package tests
+package main
 
 import (
 	"strings"
 	"testing"
-
-	"github.com/keyserxose/intr/internal"
 )
 
 func TestInputCommand(t *testing.T) {
@@ -12,7 +10,7 @@ func TestInputCommand(t *testing.T) {
 	input := "ls -la\n"
 	r := strings.NewReader(input)
 
-	got := internal.InputCommand(r)
+	got := InputCommand(r)
 	want := "ls -la"
 
 	if got != want {
@@ -21,14 +19,14 @@ func TestInputCommand(t *testing.T) {
 }
 
 func TestValidateCommand(t *testing.T) {
-	for _, c := range internal.List {
-		if !internal.ValidateCommand(c, internal.List) {
+	for _, c := range List {
+		if !ValidateCommand(c, List) {
 			t.Errorf("Command not found %v", c)
 		}
 	}
 
 	invalidCmd := "invalid_command"
-	if internal.ValidateCommand(invalidCmd, internal.List) {
+	if ValidateCommand(invalidCmd, List) {
 		t.Errorf("Expected %s to be invalid, but it passed!", invalidCmd)
 	}
 }
@@ -48,7 +46,7 @@ func TestSplitCommand(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := internal.SplitCommand(tt.input)
+			got := SplitCommand(tt.input)
 			if got != tt.want {
 				t.Errorf("SplitCommand(%q) = %q; want %q", tt.input, got, tt.want)
 			}
